@@ -3,7 +3,7 @@
 [![Pub](https://img.shields.io/pub/v/barcode_scan.svg)](https://pub.dartlang.org/packages/barcode_scan)
 [![GitHub forks](https://img.shields.io/github/forks/mintware-de/flutter_barcode_reader)](https://github.com/mintware-de/flutter_barcode_reader/network)
 
-Fork of :
+Fork of : mintware-de/flutter_barcode_reader
 Hacked so full binary QR codes are returned in iOS (as they are in Android).
 Previously they were truncated at the first 0x00 byte.
 void startScan() in Classes/BarcodeScannerViewController.m modified so the full QR code is to be returned.
