@@ -90,7 +90,22 @@
         [self.scanner stopScanning];
          AVMetadataMachineReadableCodeObject *code = codes.firstObject;
         if (code) {
-            [self.delegate barcodeScannerViewController:self didScanBarcodeWithResult:code.stringValue];
+            char buffer[4096];
+            NSData *data;
+            if (@available(iOS 11.0, *)) {
+                CIQRCodeDescriptor *test1 = (CIQRCodeDescriptor*)code.descriptor;
+                data = test1.errorCorrectedPayload;
+                [data getBytes:buffer range:NSMakeRange(0, data.length)];
+                // Skip the first 4 bytes and the data starts there...
+            } else {
+                // Fallback on earlier versions. Not sure I can test this...
+                AVMetadataMachineReadableCodeObject *test2;
+                data = [test2 valueForKeyPath:@"_internal.basicDescriptor"][@"BarcodeRawData"];  // ios8, 9, 10. Dodgy.
+                [data getBytes:buffer range:NSMakeRange(0, data.length)];
+            }
+            //[self.delegate barcodeScannerViewController:self didScanBarcodeWithResult:code.stringValue];      // Original return value.
+            NSString* myString = [[NSString alloc] initWithBytes:(buffer + 4) length:(data.length - 4) encoding:NSISOLatin1StringEncoding];
+            [self.delegate barcodeScannerViewController:self didScanBarcodeWithResult:myString];
             [self dismissViewControllerAnimated:NO completion:nil];
         }
     } error:&error];
