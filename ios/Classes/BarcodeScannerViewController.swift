@@ -139,7 +139,20 @@ class BarcodeScannerViewController: UIViewController {
           let codeType = self.formatMap.first(where: { $0.value == code.type });
           let scanResult = ScanResult.with {
             $0.type = .barcode
-            $0.rawContent = code.stringValue ?? ""
+            if #available(iOS 11.0, *) {
+                if let qrCodeDescriptor = code.descriptor as? CIQRCodeDescriptor{
+                    let data1 = qrCodeDescriptor.errorCorrectedPayload.advanced(by: 4)
+                    let string1 = String(data: data1, encoding: .isoLatin1) //String(decoding: data1, as: UTF8.self)
+                    //debugPrint(string1?.lengthOfBytes(using: .isoLatin1))
+                    $0.rawContent = string1!
+                }
+                else {
+                    $0.rawContent = code.stringValue ?? ""
+                }
+            } else {
+                // Fallback on earlier versions
+                $0.rawContent = code.stringValue ?? ""
+            }
             $0.format = codeType?.key ?? .unknown
             $0.formatNote = codeType == nil ? code.type.rawValue : ""
           }
