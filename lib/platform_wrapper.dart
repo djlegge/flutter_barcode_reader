@@ -31,51 +31,53 @@ class BarcodeScanner {
   static Future<ScanResult> scan({
     ScanOptions options = const ScanOptions(),
   }) async {
-    assert(options != null);
     if (Platform.isIOS) {
       return _doScan(options);
     }
 
-    var events = _eventChannel.receiveBroadcastStream();
-    var completer = Completer<ScanResult>();
+    final events = _eventChannel.receiveBroadcastStream();
+    final completer = Completer<ScanResult>();
 
-    StreamSubscription subscription;
-    subscription = events.listen((event) async {
+    late StreamSubscription<dynamic> subscription;
+    subscription = events.listen((dynamic event) async {
       if (event is String) {
         if (event == cameraAccessGranted) {
+          // ignore: unawaited_futures
           subscription.cancel();
           completer.complete(await _doScan(options));
         } else if (event == cameraAccessDenied) {
+          // ignore: unawaited_futures
           subscription.cancel();
           completer.completeError(PlatformException(code: event));
         }
       }
     });
 
-    var permissionsRequested =
-        await _channel.invokeMethod('requestCameraPermission');
+    final permissionsRequested =
+        (await _channel.invokeMethod<bool>('requestCameraPermission'))!;
 
     if (permissionsRequested) {
       return completer.future;
     } else {
-      subscription.cancel();
+      await subscription.cancel();
       return _doScan(options);
     }
   }
 
   static Future<ScanResult> _doScan(ScanOptions options) async {
-    var config = proto.Configuration()
-          ..useCamera = options.useCamera
-          ..restrictFormat.addAll(options.restrictFormat)
-          ..autoEnableFlash = options.autoEnableFlash
-          ..strings.addAll(options.strings)
-          ..android = (proto.AndroidConfiguration()
-                ..useAutoFocus = options.android.useAutoFocus
-                ..aspectTolerance = options.android.aspectTolerance
-              /**/)
-        /**/;
-    var buffer = await _channel.invokeMethod('scan', config?.writeToBuffer());
-    var tmpResult = proto.ScanResult.fromBuffer(buffer);
+    final config = proto.Configuration()
+      ..useCamera = options.useCamera
+      ..restrictFormat.addAll(options.restrictFormat)
+      ..autoEnableFlash = options.autoEnableFlash
+      ..strings.addAll(options.strings)
+      ..android = (proto.AndroidConfiguration()
+        ..useAutoFocus = options.android.useAutoFocus
+        ..aspectTolerance = options.android.aspectTolerance);
+    final buffer = (await _channel.invokeMethod<List<int>>(
+      'scan',
+      config.writeToBuffer(),
+    ))!;
+    final tmpResult = proto.ScanResult.fromBuffer(buffer);
     return ScanResult(
       format: tmpResult.format,
       formatNote: tmpResult.formatNote,
@@ -86,7 +88,7 @@ class BarcodeScanner {
 
   /// Returns the number of cameras which are available
   /// Use n-1 as the index of the camera which should be used.
-  static Future<int> get numberOfCameras {
-    return _channel.invokeMethod('numberOfCameras');
+  static Future<int> get numberOfCameras async {
+    return (await _channel.invokeMethod<int>('numberOfCameras'))!;
   }
 }

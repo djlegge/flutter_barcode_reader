@@ -1,112 +1,63 @@
-## v3.0.1 - 2020-05-08
+## 4.3.0
 
-Features:
-- [Added cancel for ux](https://github.com/mintware-de/flutter_barcode_reader/pull/198) - @iRaySpace
+- Upgrade min Flutter version to 3.0.1
+- Upgrade protobuf dependency to ^3.1.0
+- Upgrade pedantic_mono dev_dependency to pedantic_mono: ^1.24.0+1
 
-Bugfixes:
-- [Fix autofocus crash](https://github.com/mintware-de/flutter_barcode_reader/pull/228) - @oznecniV97
-- [Fix camera selection in Android](https://github.com/mintware-de/flutter_barcode_reader/pull/231) - @GabrieleVolpato
+## 4.2.4
 
-## v3.0.0 - 2020-04-18
+- Update Kotlin Gradle plugin version 1.5.20 (#65)
 
-Bugfixes:
-- [Add @Keep annotation](https://github.com/mintware-de/flutter_barcode_reader/pull/214) to fix "No implementation for method requestCameraPermission" - @devtronic
+## 4.2.3
 
-## v3.0.0-dev.3 - 2020-04-14
+- zxing version 1.9.13 does not exist in the mavenCentral (#60)
 
-Bugfixes:
-- [App crash on orientation change](https://github.com/mintware-de/flutter_barcode_reader/pull/209) - @subinsv
+## 4.2.2
 
-## v3.0.0-dev.2 - 2020-04-12
+- Migrate from JCenter to Maven Central for gradle dependencies (#57)
 
-Migrated the changes of the 2.0.0 track 
+## 4.2.1+1
 
-- Fixed the request camera permission flow on Android
+- Fix README (#59)
 
-Updated also the Flutter env. SDK constraint to ">=2.1.0 <3.0.0" 
+## 4.2.1
 
-## v3.0.0-dev.1 - 2020-04-12
+- Fix compile error (#48, #49)
 
-Changes:
-- [Rewrite platform communication](https://github.com/mintware-de/flutter_barcode_reader/pull/185) - @devtronic
-  - This provides a better way to configure the plugin
-  - iOS code migrated to Swift
-  - Android code migrated to FlutterPlugin
-  - Platform communication with protobuf
-  - Retrieve the number of available cameras with `BarcodeScanner.numberOfCameras`
-  - Flexible configuration:
-  - Set the strings for the flash on/off and the cancel button
-  - Restrict the detected barcode formats
-  - Set which camera is used for scanning barcodes
+## 4.2.0
 
-**BREAKING CHANGES**:
-- minSdk version on Android is now 18
-- `BarcodeScanner.scan()` returns a `ScanResult` object. Check [UPGRADE.md](./UPGRADE.md) for migration details.
+- Changed protobuf_version and compileSdkVersion to support Android 12 / SDK 31
 
-## v2.0.2 - 2020-04-14
+## 4.1.4
 
-Bugfixes:
-- [Fixed the request camera permission flow on Android](https://github.com/mintware-de/flutter_barcode_reader/pull/186) - @devtronic
+- Broken artifact fixes for Apple Silicon M1 (#28)
 
-## v2.0.1 - 2020-02-19
+## 4.1.3
 
-Bugfixes:
-- Fixed wrong build.gradle
+- Fix Error in release mode properly (#9)
+  - Previously, it was fixed by reverting <https://github.com/mono0926/barcode_scan2/commit/cea32818174b62326d3f798c264f0e78f1a05aae> , but it caused another error when using with cloud_firestore etc. So that change is applied again and fixed original issue by <https://github.com/mono0926/barcode_scan2/commit/d540aef8eaf693fb2628449d00aa7a422c6e1d65>
 
-## v2.0.0 - 2020-02-19
+## 4.1.2
 
-Features:
-- [Add-to-app support](https://github.com/mintware-de/flutter_barcode_reader/pull/168) - @santiihoyos
-- Changed overlay to full screen in iOS 13
+- Fix Error in release mode (#9)
 
-Bugfixes:
-- [Fixed rotation on iOS](https://github.com/mintware-de/flutter_barcode_reader/pull/167) - @mintware-de
-  - [#61 Rotating orientation on iPhones only shows half the screen](https://github.com/mintware-de/flutter_barcode_reader/issues/61)
+## 4.1.1
 
-Changes:
-- [Fix compile warning](https://github.com/mintware-de/flutter_barcode_reader/pull/127) - @lookfirst
-- [Upgrade gradle](https://github.com/mintware-de/flutter_barcode_reader/pull/142) - @SuuSoJeat
-  - `com.android.tools.build:gradle`: 3.3.1 -> 3.5.0
-  - `org.jetbrains.kotlin:kotlin-gradle-plugin`: 1.3.20 -> 1.3.50
-  - `compileSdkVersion`: 28 -> 29
-  - `targetSdkVersion`: 28 -> 29
-  - `gradle`: 4.10.2 -> 5.4.1
-- [Package description updated](https://github.com/mintware-de/flutter_barcode_reader/pull/180) - @connectety
-- README.md and LICENSE.md updated
-- Since the project owner has been changed, the package names are different. Checkout the [UPGRADE.md](./UPGRADE.md) for details.
+- Fix After flutter plugin register, the topViewController may changed, present Scan ViewController failed! (#10)
 
-## v1.0.0 - 2018-08-30
+## 4.1.0
 
-Breaking Change: Adds support for AndroidX
+- Lock screen rotation when scanner is shown (#7)
 
-## v0.0.8 - 2018-08-30
+## 4.0.1
 
-* Fixes [iOS: pressing cancel doesn't stop scanning](https://github.com/mintware-de/flutter_barcode_reader/issues/60) thanks to @tgezginis.
+- Fix When ViewController whose view is not in the window hierarchy, present Scan ViewController failed will failed. (#5)
 
-## v0.0.7 - 2018-08-30
+## 4.0.0
 
-* Fix iOS barcodes not scanning
+- Original [barcode_scan](https://pub.dev/packages/barcode_scan) was discontinued, so [barcode_scan2](https://pub.dev/packages/barcode_scan) was borned with sound null safety support🎉
 
-## v0.0.6 - 2018-08-29
+---
 
-* Fix android dependencies
-* iOS scanner now looks like Android thanks to @dustin-graham 
-
-## v0.0.4 - 2018-02-8
-
-* Fix missing gradle dependency (thanks to [toteto](https://github.com/mintware-de/flutter_barcode_reader/pull/15))
-* Update gradle dependencies
-
-## v0.0.3 - 2017-02-8
-
-* Improved permission handling (thanks to [BenSower](https://github.com/BenSower))
-* Added MIT license
-
-## v0.0.2 - 2017-11-7
-
-* Rewrite iOS scanner in Objective-C to avoid Swift use_frameworks! conflicts with other plugins (see https://github.com/flutter/flutter/issues/10968)
-
-## v0.0.1 - 2017-10-29
-
-* Supports 2D & QR Codes
-* Control flash while scanning
+Prior to 3.0.1, see the CHANGELOG of discontinued original package:
+<https://pub.dev/packages/barcode_scan/changelog>
