@@ -1,24 +1,29 @@
-[![GitHub license](https://img.shields.io/github/license/mintware-de/flutter_barcode_reader.svg)](https://github.com/mintware-de/flutter_barcode_reader/blob/master/LICENSE)
+[![GitHub license](https://img.shields.io/github/license/mono0926/barcode_scan2.svg)](https://github.com/mono0926/barcode_scan2/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/mono0926/barcode_scan2)](https://github.com/mono0926/barcode_scan2/stargazers)
+[![Pub](https://img.shields.io/pub/v/barcode_scan2.svg)](https://pub.dartlang.org/packages/barcode_scan2)
+[![GitHub forks](https://img.shields.io/github/forks/mono0926/barcode_scan2)](https://github.com/mono0926/barcode_scan2/network)
 
-Fork of : mintware-de/flutter_barcode_reader
 
-Hacked so full binary QR codes are returned in iOS (as they are in Android).
-Previously they were truncated at the first 0x00 byte.
-void startScan() in Classes/BarcodeScannerViewController.m modified so the full QR code is to be returned.
-In older ios versions, the data may be available but it is probably a bad idea to access it this way.
-There seems to be a 4 byte header and 20 bytes extra at the end. I've stripped off the header but left the 20 bytes at the end (for now).
+Fork of : mintware-de/flutter_barcode_reader (later mono0926/barcode_scan2)
 
-# Barcode Scanner
+Modified so full binary QR codes are returned in iOS (as they are in Android). Previously they were truncated at the first 0x00 byte. void startScan() in Classes/BarcodeScannerViewController.swift modified so the full QR code is to be returned. In older ios versions, the data may be available but it is probably a bad idea to access it this way. There seems to be a 4 byte header and 20 bytes extra at the end. I've stripped off the header but left the 20 bytes at the end (for now).
 
-A flutter plugin for scanning 2D barcodes and QR codes. 
+
+## Reborned🎉
+
+Original [barcode_scan](https://pub.dev/packages/barcode_scan) was discontinued, so [barcode_scan2](https://pub.dev/packages/barcode_scan2) was borned with sound null safety support🎉
+
+# barcode_scan2
+
+A flutter plugin for scanning 2D barcodes and QR codes.
 
 This provides a simple wrapper for two commonly used iOS and Android libraries:
 
-iOS: https://github.com/mikebuss/MTBBarcodeScanner
-
-Android: https://github.com/dm77/barcodescanner
+- iOS: https://github.com/mikebuss/MTBBarcodeScanner
+- Android: https://github.com/dm77/barcodescanner
 
 ### Features
+
 - [x] Scan 2D barcodes
 - [x] Scan QR codes
 - [x] Control the flash while scanning
@@ -27,15 +32,17 @@ Android: https://github.com/dm77/barcodescanner
 ## Getting Started
 
 ### Android
+
 For Android, you must do the following before you can use the plugin:
 
 * Add the camera permission to your AndroidManifest.xml
-     
+
      `<uses-permission android:name="android.permission.CAMERA" />`
 
 * This plugin is written in Kotlin. Therefore, you need to add Kotlin support to your project. See [installing the Kotlin plugin](https://kotlinlang.org/docs/tutorials/kotlin-android.html#installing-the-kotlin-plugin).
 
 Edit your project-level build.gradle file to look like this:
+
 ```groovy
 buildscript {
     ext.kotlin_version = '1.3.61'
@@ -64,11 +71,13 @@ Now you can depend on the barcode_scan plugin in your pubspec.yaml file:
 ```yaml
 dependencies:
     # ...
-    barcode_scan: any
+    barcode_scan2: any
 ```
+
 Click "Packages get" in Android Studio or run `flutter packages get` in your project folder.
 
 ### iOS
+
 To use on iOS, you must add the the camera usage description to your Info.plist
 
 ```xml
@@ -84,12 +93,11 @@ To use on iOS, you must add the the camera usage description to your Info.plist
 ## Usage
 
 ```dart
-
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 void main() async {
   var result = await BarcodeScanner.scan();
-  
+
   print(result.type); // The result type (barcode, cancelled, failed)
   print(result.rawContent); // The barcode content
   print(result.format); // The barcode format (as enum)
@@ -102,17 +110,16 @@ void main() async {
 You can pass options to the scan method:
 
 ```dart
-
-import 'package:barcode_scan/barcode_scan.dart';
+import 'package:barcode_scan2/barcode_scan2.dart';
 
 void main() async {
-  
+
   var options = ScanOptions(
     // set the options
   );
 
   var result = await BarcodeScanner.scan(options: options);
-  
+
   // ...
 }
 ```
@@ -126,32 +133,32 @@ void main() async {
 | `restrictFormat`           | `BarcodeFormat[]` | Restrict the formats which are recognized                                                 | iOS + Android |
 | `useCamera`                | `int`             | The index of the camera which is used for scanning (See `BarcodeScanner.numberOfCameras`) | iOS + Android |
 | `autoEnableFlash`          | `bool`            | Enable the flash when start scanning                                                      | iOS + Android |
-| `android.aspectTolerance`  | `double`          | Enable the flash when start scanning                                                      | Android only  |
-| `android.useAutoFocus`     | `bool`            | Enable the flash when start scanning                                                      | Android only  |
+| `android.aspectTolerance`  | `double`          | Enable auto focus on Android                                                              | Android only  |
+| `android.useAutoFocus`     | `bool`            | Set aspect ratio tolerance level used in calculating the optimal Camera preview size      | Android only  |
 
 ## Development setup
 
 ###  Setup protobuf
 
 Mac:
+
 ```bash
 $ brew install protobuf
 $ brew install swift-protobuf
 ```
+
 Windows / Linux: https://github.com/protocolbuffers/protobuf#protocol-compiler-installation
 
 
 Activate the protobuf dart plugin:
-`$ pub global activate protoc_plugin`
+
+```bash
+$ flutter pub global activate protoc_plugin
+```
 
 Install the`Protobuf Support` plugin for IDEA / Android Studio or `vscode-proto3` for VS Code
 
 If you changed the protos.proto you've to execute the ./generate_proto.sh to update the dart / swift sources
-
-
-
-
-
 
 ## Common problems
 ### Android "Could not find org.jetbrains.kotlin:kotlin-stdlib-jre..."
