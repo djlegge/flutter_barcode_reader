@@ -147,7 +147,19 @@ class BarcodeScannerViewController: UIViewController {
             $0.type = .barcode
             if #available(iOS 11.0, *) {
                 if let qrCodeDescriptor = code.descriptor as? CIQRCodeDescriptor{
-                    let data1 = qrCodeDescriptor.errorCorrectedPayload.advanced(by: 4)
+                    /* The error corrected payload seens to be :
+                     0x70 - Presumably QR format etc.
+                     0x14 - Presumably QR format etc.
+                     0x03 - High byte on encoded data length.
+                     0x62 - Low byte of encoded data length.
+                     0x78 - First byte of actual data that was encoded (zlib compressed data in this case).
+                     0xDA - Second byte of actual data that was encoded (zlib compressed data in this case).
+                     */
+                    let data = qrCodeDescriptor.errorCorrectedPayload;
+                    //debugPrint(data);
+                    let length = (UInt32(data[2]) << 8) | UInt32(data[3]);
+                    //let data1 = qrCodeDescriptor.errorCorrectedPayload.advanced(by: 4)
+                    let data1 = data.subdata(in: 4..<Data.Index(length + 4))
                     let string1 = String(data: data1, encoding: .isoLatin1) //String(decoding: data1, as: UTF8.self)
                     //debugPrint(string1?.lengthOfBytes(using: .isoLatin1))
                     $0.rawContent = string1!
