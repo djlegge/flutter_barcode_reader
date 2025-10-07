@@ -1,3 +1,15 @@
+## 4.5.1
+
+- Fix Android build fails on Apple Silicon M3(#104, #105)
+
+## 4.5.0
+
+- Support Flutter 3.29
+
+## 4.4.0
+
+- Add support for changing the AppBar title on Android (#99)
+
 ## 4.3.3
 
 - Ensure only one scan result callback, fixing (#23, #89)
