@@ -1,3 +1,15 @@
+## 4.3.3
+
+- Ensure only one scan result callback, fixing (#23, #89)
+
+## 4.3.2
+
+- Add compatibility with Gradle 8+ (#87)
+
+## 4.3.1
+
+- Fix `Could not get unknown property 'source' for generate-proto-generateDebugProto of type org.gradle.api.internal.file.DefaultSourceDirectorySet.` error (#84, #85)
+
 ## 4.3.0
 
 - Upgrade min Flutter version to 3.0.1
